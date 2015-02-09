@@ -1,0 +1,56 @@
+body {
+    margin: 0;
+    padding: 0;
+    color: #ffffff;
+    font-family: "Helvetica",sans-serif;
+    font-size: 13px;
+    line-height: 1.4em;
+    background: #5eb027 repeat-x top;
+}
+
+label {
+    padding: 10px;
+}
+
+li {
+    list-style-type: none;
+    text-decoration: none;
+}
+a{
+    text-decoration: none;
+}
+
+#header {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.field {
+    display: table-cell;
+    vertical-align: middle;
+    height: 50px;
+}
+
+.navigation li {
+    padding-left: 20px;
+    display: table-cell;
+    vertical-align: middle;
+    height: 30px;
+}
+
+.todo {
+    clear: both;
+}
+
+#footer{
+    clear: both;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.action-menu li {
+    padding-left: 20px;
+    display: table-cell;
+    vertical-align: middle;
+    height: 30px;
+}
