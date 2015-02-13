@@ -9,9 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class TaskAddServlet extends AbstractServlet {
 
@@ -19,25 +16,15 @@ public class TaskAddServlet extends AbstractServlet {
     protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
-            jumpRedirect(ConstantsServlet.JUMP_SERVLET, response);
+            jumpRedirect(ConstantsServlet.JUMP_TASK_SERVLET, response);
             return;
         }
+
         User user = (User) session.getAttribute("user");
         String tittle = request.getParameter("title-text");
-        Date expDate = dateFormat(request.getParameter("exp-date"));
+        String expDate = request.getParameter("exp-date");
 
         new TaskImplDB().addTask(user.getId(), tittle, expDate);
-        jumpRedirect(ConstantsServlet.JUMP_SERVLET, response);
-    }
-
-    private Date dateFormat(String dateInString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = null;
-        try {
-            date = formatter.parse(dateInString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
+        jumpRedirect(ConstantsServlet.JUMP_TASK_SERVLET, response);
     }
 }

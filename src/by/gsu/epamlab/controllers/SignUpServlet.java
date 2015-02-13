@@ -28,7 +28,7 @@ public class SignUpServlet extends AbstractServlet {
     protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
 
-        if (session.getAttribute(ConstantsJSP.SESSION_USER) != null) {
+        if (session.getAttribute(ConstantsServlet.USER) != null) {
             response.sendRedirect(ConstantsServlet.JUMP_MAIN);
             return;
         }
@@ -52,7 +52,7 @@ public class SignUpServlet extends AbstractServlet {
             jump(ConstantsServlet.JUMP_MAIN, request, response);
             return;
         }
-        session.setAttribute(ConstantsJSP.SESSION_USER, user);
+        session.setAttribute(ConstantsServlet.USER, user);
         jumpRedirect(ConstantsServlet.JUMP_MAIN, response);
     }
 }

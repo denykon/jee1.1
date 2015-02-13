@@ -9,22 +9,44 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.DataFormatException;
 
 public class TaskImplDB implements ITaskDAO {
 
-    public List<Task> getTasks(int id) {
-
+    @Override
+    public List<Task> getTasks(int id, String type) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         List<Task> tasks = new ArrayList<>();
-
+        String sql;
         try {
             connection = DbConnection.getConnection();    //???????? DAOException
-            preparedStatement = connection.prepareStatement("SELECT id, tittle, status, expDate FROM tasks WHERE userId = ?");
+            switch (type) {
+                case "today":
+                    sql = "SELECT id, tittle, status, expDate, inBin FROM tasks WHERE userId = ? AND status = 0 AND expDate <= CURDATE() AND inBin = 0";
+                    break;
+                case "tomorrow":
+                    sql = "SELECT id, tittle, status, expDate, inBin FROM tasks WHERE userId = ? AND status = 0 AND expDate = CURDATE() + INTERVAL 1 DAY AND inBin = 0";
+                    break;
+                case "someday":
+                    sql = "SELECT id, tittle, status, expDate, inBin FROM tasks WHERE userId = ? AND status = 0 AND expDate > CURDATE() + INTERVAL 1 DAY AND inBin = 0";
+                    break;
+                case "fixed":
+                    sql = "SELECT id, tittle, status, expDate, inBin FROM tasks WHERE userId = ? AND status = 1 AND inBin = 0";
+                    break;
+                case "bin":
+                    sql = "SELECT id, tittle, status, expDate, inBin FROM tasks WHERE userId = ? AND inBin = 1";
+                    break;
+                default:
+                    sql = "";
+            }
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();        //???????? SQLException
             while (resultSet.next()) {
@@ -32,7 +54,8 @@ public class TaskImplDB implements ITaskDAO {
                 String tittle = resultSet.getString(2);
                 Status status = Status.values()[resultSet.getInt(3)];
                 Date date = resultSet.getDate(4);
-                tasks.add(new Task(taskId, tittle, status, date, false));
+                boolean bin = resultSet.getBoolean(5);
+                tasks.add(new Task(taskId, tittle, status, date, bin));
             }
             return tasks;
         } catch (SQLException e) {
@@ -47,12 +70,12 @@ public class TaskImplDB implements ITaskDAO {
     }
 
     @Override
-    public void addTask(int userId, String tittle, Date expDate) {
-
+    public void addTask(int userId, String tittle, String expDate) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        java.sql.Date expSQLDate = new java.sql.Date(expDate.getTime());
         try {
+            Date date = dateFormat(expDate);
+            java.sql.Date expSQLDate = new java.sql.Date(date.getTime());
             connection = DbConnection.getConnection();    //???????? DAOException
             preparedStatement = connection.prepareStatement("INSERT INTO tasks (userId, tittle, status, expDate, inBin) VALUES (?, ?, 0, ?, 0)");
             preparedStatement.setInt(1, userId);
@@ -63,6 +86,73 @@ public class TaskImplDB implements ITaskDAO {
             e.printStackTrace();
         } catch (DAOException e) {
             e.printStackTrace();
+        } catch (DataFormatException e) {
+            e.printStackTrace();
+        } finally {
+            DbConnection.closeResources(preparedStatement, connection);
         }
     }
+
+    @Override
+    public void actTask(String[] taskIds, String action) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            for (String taskId : taskIds) {
+                connection = DbConnection.getConnection();
+                switch (action) {
+                    case "fix":
+                        preparedStatement = connection.prepareStatement("UPDATE tasks SET tasks.status = abs(tasks.status - 1) WHERE tasks.id = ?");
+                        break;
+                    case "move":
+                        preparedStatement = connection.prepareStatement("UPDATE tasks SET tasks.inBin = abs(tasks.inBin - 1) WHERE tasks.id = ?");
+                        break;
+                    case "delete":
+                        preparedStatement = connection.prepareStatement("DELETE FROM tasks WHERE tasks.inBin = 1 AND tasks.id = ?");
+                        break;
+                    default:
+                        throw new SQLException("invalid action");
+                }
+                preparedStatement.setInt(1, Integer.parseInt(taskId));
+                preparedStatement.execute();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DAOException e) {
+            e.printStackTrace();
+        } finally {
+            DbConnection.closeResources(preparedStatement, connection);
+        }
+    }
+
+    private Date dateFormat(String dateInString) throws DataFormatException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = formatter.parse(dateInString);
+        } catch (ParseException e) {
+            throw new DataFormatException("Incorrect date format");
+        }
+        return date;
+    }
+
+    public void saveFile(String fileTaskId, String filename) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = DbConnection.getConnection();
+            preparedStatement = connection.prepareStatement("UPDATE tasks SET tasks.file = ? WHERE tasks.id = ?");
+            preparedStatement.setString(1, filename);
+            preparedStatement.setInt(2, Integer.parseInt(fileTaskId));
+            preparedStatement.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DAOException e) {
+            e.printStackTrace();
+        } finally {
+            DbConnection.closeResources(preparedStatement, connection);
+        }
+    }
+
 }

@@ -36,17 +36,16 @@ public class LoginServlet extends AbstractServlet {
         }
 
         HttpSession session = request.getSession(false);
-        if (session.getAttribute(ConstantsJSP.SESSION_USER) == null) {
+        if (session.getAttribute(ConstantsServlet.USER) == null) {
             String impl = session.getServletContext().getInitParameter(ConstantsServlet.IMPL);
             try {
-                session.setAttribute(ConstantsJSP.SESSION_USER, UserDAOFactory.
+                session.setAttribute(ConstantsServlet.USER, UserDAOFactory.
                         createDAOUser(impl).getUser(login, password));
             } catch (UserNotFoundException | DAOFactoryException e) {
-                session.setAttribute(ConstantsJSP.SESSION_USER, null);
+                session.setAttribute(ConstantsServlet.USER, null);
                 request.setAttribute(ConstantsJSP.KEY_ERROR_MESSAGE, e.getMessage());
             }
         }
-        request.removeAttribute(ConstantsJSP.PASSWORD_NAME);
-        jump(ConstantsServlet.JUMP_SERVLET, request, response);
+        jumpRedirect(ConstantsServlet.JUMP_TASK_SERVLET, response);
     }
 }

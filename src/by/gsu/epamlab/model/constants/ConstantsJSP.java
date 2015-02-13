@@ -9,11 +9,8 @@ package by.gsu.epamlab.model.constants;
 public final class ConstantsJSP {
 
     public static final String KEY_GUEST = "guest";
-    public static final String SESSION_USER = "user";
     public static final String KEY_ERROR_MESSAGE = "errorMessage";
 
-    public static final String LOGIN_EMPTY_ERROR = "Login is empty.";
-    public static final String NULL_ERROR = "Login or password are absent.";
     public static final String USER_ABSENT_ERROR = "Sorry, we didn't recognise that login, please check your login and password";
     public static final String LOGIN_EXIST_ERROR = "This login already exist, try another one";
 
@@ -27,4 +24,8 @@ public final class ConstantsJSP {
     public static final String REG_FIRST_NAME = "regFirstName";
     public static final String REG_LAST_NAME = "regLastName";
     public static final String REG_SUBMIT_NAME = "regSubmit";
+
+    public static final String TODAY_PAGE = "today";
+    public static final String REFERENCE = "reference";
+    public static final String TASK_LIST = "taskList";
 }

@@ -29,7 +29,7 @@ public class DbUser implements IUserDAO {
     private static final String SQL_ADD_USER = "INSERT INTO todo.users " +
             "( login, password, first_name, last_name, registration_date ) " +
             "VALUES ( ?, ?, ?, ?, CURRENT_DATE() )";
-    private static final String SQL_FIND_USER = "SELECT count(login) FROM todo.users WHERE login = ?";
+    private static final String SQL_FIND_USER = "SELECT login FROM todo.users WHERE login = ?";
 
 
     public DbUser() {
@@ -78,9 +78,9 @@ public class DbUser implements IUserDAO {
     public User addUser(String login, String password, String firstName, String lastName) throws UserAddingException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        synchronized (this) {
-            try {
-                connection = DbConnection.getConnection();
+        try {
+            connection = DbConnection.getConnection();
+            synchronized (this) {
                 if (!isUserExist(login, connection)) {
                     preparedStatement = connection.prepareStatement(SQL_ADD_USER);
                     preparedStatement.setString(LOGIN_INDEX, login);
@@ -88,15 +88,20 @@ public class DbUser implements IUserDAO {
                     preparedStatement.setString(FIRST_NAME_INDEX, firstName);
                     preparedStatement.setString(LAST_NAME_INDEX, lastName);
                     preparedStatement.executeUpdate();
+
                 } else {
                     throw new UserAddingException(ConstantsJSP.LOGIN_EXIST_ERROR);
                 }
-            } catch (SQLException | DAOException e) {
-                throw new UserAddingException("Problem to add user to database " + e);
-            } finally {
-                DbConnection.closeResources(preparedStatement, connection);
             }
-            return new User(login, firstName, lastName);
+        } catch (SQLException | DAOException e) {
+            throw new UserAddingException("Problem to add user to database " + e);
+        } finally {
+            DbConnection.closeResources(preparedStatement, connection);
+        }
+        try {
+            return getUser(login, password);
+        } catch (UserNotFoundException e) {
+            throw new UserAddingException("can't create user");
         }
     }
 
@@ -108,7 +113,7 @@ public class DbUser implements IUserDAO {
             preparedStatement.setString(LOGIN_INDEX, login);
             resultSet = preparedStatement.executeQuery();
             resultSet.first();
-            return (resultSet.getInt(LOGIN_INDEX) > 0);
+            return resultSet.next();
         } catch (SQLException e) {
             throw new UserAddingException("Problem to add user to database " + e);
         } finally {
