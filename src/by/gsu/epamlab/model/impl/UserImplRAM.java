@@ -11,11 +11,11 @@ import java.util.Map;
 /**
  *  Memory user implementation
  */
-public class MemoryUser implements IUserDAO {
+public class UserImplRAM implements IUserDAO {
 
     private final static Map<User, String> userMap = new HashMap<>();
 
-    public MemoryUser() {
+    public UserImplRAM() {
         super();
     }
 
