@@ -16,6 +16,5 @@ public class FileUploadServlet extends AbstractServlet {
         ServletInputStream in = request.getInputStream();
         new File().upload(in);
         jumpRedirect(ConstantsServlet.JUMP_TASK_SERVLET, response);
-
     }
 }

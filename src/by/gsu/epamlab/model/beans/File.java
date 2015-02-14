@@ -1,5 +1,7 @@
 package by.gsu.epamlab.model.beans;
 
+import by.gsu.epamlab.model.impl.TaskImplDB;
+
 import javax.servlet.ServletInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -19,19 +21,15 @@ public class File {
         int i = in.readLine(line, 0, 128);
         int boundaryLength = i - 2;
         String boundary = new String(line, 0, boundaryLength);
+        String fileTaskID = "";
 
         while (i != -1) {
             String newLine = new String(line, 0, i);
-            if (newLine.contains("fileTaskId")) {
-                in.readLine(line, 0, 128);
-                in.readLine(line, 0, 128);
-                String fileTaskID = new String(line, 0, i - 2);
-            }
-            if (newLine.startsWith("Content-Disposition: form-data; name=\"")) {
-                String s = new String(line, 0, i - 2);
-                int pos = s.indexOf("filename=\"");
+            if (newLine.contains("name=\"file\"")) {
+                String str = new String(line, 0, i - 2);
+                int pos = str.indexOf("filename=\"");
                 if (pos != -1) {
-                    String filepath = s.substring(pos + 10, s.length() - 1);
+                    String filepath = str.substring(pos + 10, str.length() - 1);
                     // Windows browsers include the full path on the client
                     // But Linux/Unix and Mac browsers only send the filename
                     // test if this is from a Windows browser
@@ -42,8 +40,6 @@ public class File {
                         filename = filepath;
                     }
                 }
-
-                //this is the file content
 
                 //skip for 3 lines
                 for (int j = 0; j < 2; j++) {
@@ -74,7 +70,6 @@ public class File {
                         if (file != null) {
                             try {
                                 file.close();
-                                System.out.println(System.currentTimeMillis());
                             } catch (IOException e) {
                                 e.printStackTrace();
                                 System.err.println("file closing problem");
@@ -83,7 +78,15 @@ public class File {
                     }
                 }
             }
+            if (newLine.contains("fileTaskId")) {
+                in.readLine(line, 0, 128);
+                i = in.readLine(line, 0, 128);
+                fileTaskID = new String(line, 0, i - 2);
+            }
             i = in.readLine(line, 0, 128);
+        }
+        if (!"".equals(fileTaskID) && !"".equals(filename)) {
+            new TaskImplDB().saveFile(fileTaskID, filename);
         }
     }
 
