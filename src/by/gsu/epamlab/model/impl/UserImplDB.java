@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DbUser implements IUserDAO {
+public class UserImplDB implements IUserDAO {
 
     private static final int LOGIN_INDEX = 1;
     private static final int PASSWORD_INDEX = 2;
@@ -32,7 +32,7 @@ public class DbUser implements IUserDAO {
     private static final String SQL_FIND_USER = "SELECT login FROM todo.users WHERE login = ?";
 
 
-    public DbUser() {
+    public UserImplDB() {
         super();
     }
 
