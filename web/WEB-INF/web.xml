@@ -78,6 +78,22 @@
         <servlet-name>fileupload</servlet-name>
         <url-pattern>/fileupload</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>filedownload</servlet-name>
+        <servlet-class>by.gsu.epamlab.controllers.FileDownloadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>filedownload</servlet-name>
+        <url-pattern>/filedownload</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>filedelete</servlet-name>
+        <servlet-class>by.gsu.epamlab.controllers.FileDeleteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>filedelete</servlet-name>
+        <url-pattern>/filedelete</url-pattern>
+    </servlet-mapping>
     <context-param>
         <param-name>impl</param-name>
         <param-value>db</param-value>

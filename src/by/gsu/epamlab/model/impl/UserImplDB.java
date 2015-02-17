@@ -29,7 +29,7 @@ public class UserImplDB implements IUserDAO {
     private static final String SQL_ADD_USER = "INSERT INTO todo.users " +
             "( login, password, first_name, last_name, registration_date ) " +
             "VALUES ( ?, ?, ?, ?, CURRENT_DATE() )";
-    private static final String SQL_FIND_USER = "SELECT login FROM todo.users WHERE login = ?";
+    private static final String SQL_FIND_USER = "SELECT id FROM todo.users WHERE login = ?";
 
 
     public UserImplDB() {
@@ -42,13 +42,9 @@ public class UserImplDB implements IUserDAO {
     @Override
     public User getUser(String login, String password) throws UserNotFoundException {
         Connection connection = null;
-        int userId = 0;
-        String userFirstName = null;
-        String userLastName = null;
-        //to do some md5 for password here
-
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        //to do some md5 for password here
         try {
             connection = DbConnection.getConnection();
             preparedStatement = connection.prepareStatement(SQL_GET_USER);
@@ -57,9 +53,10 @@ public class UserImplDB implements IUserDAO {
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.first()) {
-                userId = resultSet.getInt(ID_COLUMN);
-                userFirstName = resultSet.getString(FIRST_NAME_COLUMN);
-                userLastName = resultSet.getString(LAST_NAME_COLUMN);
+                int userId = resultSet.getInt(ID_COLUMN);
+                String userFirstName = resultSet.getString(FIRST_NAME_COLUMN);
+                String userLastName = resultSet.getString(LAST_NAME_COLUMN);
+                return new User(userId, login, userFirstName, userLastName);
             } else {
                 throw new UserNotFoundException(ConstantsJSP.USER_ABSENT_ERROR);
             }
@@ -71,7 +68,6 @@ public class UserImplDB implements IUserDAO {
         } finally {
             DbConnection.closeResources(resultSet, preparedStatement, connection);
         }
-        return new User(userId, login, userFirstName, userLastName);
     }
 
     @Override
@@ -112,7 +108,6 @@ public class UserImplDB implements IUserDAO {
             preparedStatement = connection.prepareStatement(SQL_FIND_USER);
             preparedStatement.setString(LOGIN_INDEX, login);
             resultSet = preparedStatement.executeQuery();
-            resultSet.first();
             return resultSet.next();
         } catch (SQLException e) {
             throw new UserAddingException("Problem to add user to database " + e);

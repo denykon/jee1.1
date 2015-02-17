@@ -14,6 +14,7 @@ import java.util.Map;
 public class UserImplRAM implements IUserDAO {
 
     private final static Map<User, String> userMap = new HashMap<>();
+    private static int id = 0;
 
     public UserImplRAM() {
         super();
@@ -42,7 +43,7 @@ public class UserImplRAM implements IUserDAO {
     @Override
     public User addUser(String login, String password, String firstName, String lastName) throws UserAddingException {
         synchronized (this){
-            User user = new User(login, firstName, lastName);
+            User user = new User(id++, login, firstName, lastName);
             if (!getUserMap().containsKey(user)){
                 getUserMap().put(user, password);
                 return user;

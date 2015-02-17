@@ -15,16 +15,12 @@ public class User {
 		super();
 	}
 
-    public User(String login, String firstName, String lastName) {
+    public User(int id, String login, String firstName, String lastName) {
         super();
+        this.id = id;
         this.login = login;
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    public User(int id, String login, String firstName, String lastName) {
-        this(login, firstName, lastName);
-        this.id = id;
     }
 
     public int getId() {

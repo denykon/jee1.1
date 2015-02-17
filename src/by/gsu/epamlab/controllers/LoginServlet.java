@@ -13,14 +13,14 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- *  LoginServlet
+ *  Login Servlet
  */
 public class LoginServlet extends AbstractServlet {
 
     /**
      *
-     * @param request the request
-     * @param response the response
+     * @param request the HttpServletRequest
+     * @param response the HttpServletResponse
      *
      * @throws IOException
      * @throws ServletException
@@ -44,6 +44,8 @@ public class LoginServlet extends AbstractServlet {
             } catch (UserNotFoundException | DAOFactoryException e) {
                 session.setAttribute(ConstantsServlet.USER, null);
                 request.setAttribute(ConstantsJSP.KEY_ERROR_MESSAGE, e.getMessage());
+                jump(ConstantsServlet.JUMP_MAIN, request, response);
+                return;
             }
         }
         jumpRedirect(ConstantsServlet.JUMP_TASK_SERVLET, response);

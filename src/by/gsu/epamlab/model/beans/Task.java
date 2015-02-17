@@ -8,13 +8,15 @@ public class Task {
     private Status status;
     private Date extDate;
     private boolean inBin;
+    private boolean haveFile;
 
-    public Task(int id, String tittle, Status status, Date extDate, boolean inBin) {
+    public Task(int id, String tittle, Status status, Date extDate, boolean inBin, boolean haveFile) {
         this.id = id;
         this.tittle = tittle;
         this.status = status;
         this.extDate = extDate;
         this.inBin = inBin;
+        this.haveFile = haveFile;
     }
 
     public int getId() {
@@ -55,5 +57,13 @@ public class Task {
 
     public void setInBin(boolean inBin) {
         this.inBin = inBin;
+    }
+
+    public boolean isHaveFile() {
+        return haveFile;
+    }
+
+    public void setHaveFile(boolean haveFile) {
+        this.haveFile = haveFile;
     }
 }

@@ -1,14 +1,16 @@
 <%@ page import="by.gsu.epamlab.model.constants.ConstantsJSP" %>
 <%@ taglib uri="/jstl/core" prefix="c" %>
 <div id="header">
-    <h2 id="welcome_text">Welcome, <c:out value="${user.login}" default="<%=ConstantsJSP.KEY_GUEST%>"/></h2>
+    <div class="container">
+        <h3>Welcome <c:out value="${user.firstName}" default="<%=ConstantsJSP.KEY_GUEST%>"/></h3>
     <c:choose>
         <c:when test="${empty user}">
             <jsp:include page="login.jsp"/>
-            <a href="registration.jsp">Registration</a>
+            <h5><a href="registration.jsp">or You can <kbd>REGISTER</kbd></a></h5>
         </c:when>
         <c:otherwise>
-            <a href="/logout">Logout</a>
+            <h5><a href="/logout">Logout</a></h5>
         </c:otherwise>
     </c:choose>
+    </div>
 </div>

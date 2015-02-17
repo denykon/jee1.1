@@ -8,6 +8,6 @@ public final class ConstantsServlet {
     public static final String JUMP_TASK_SERVLET = "/tasks";
 
     public static final String IMPL = "impl";
-    public static final String CURRENT_PAGE = "page";
+    public static final String CURRENT_PAGE = "taskPage";
     public static final String USER = "user";
 }

@@ -4,7 +4,9 @@ import by.gsu.epamlab.model.beans.Status;
 import by.gsu.epamlab.model.beans.Task;
 import by.gsu.epamlab.model.connection.DbConnection;
 import by.gsu.epamlab.model.exceptions.DAOException;
+import by.gsu.epamlab.model.exceptions.FileCheckException;
 
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,19 +31,19 @@ public class TaskImplDB implements ITaskDAO {
             connection = DbConnection.getConnection();    //???????? DAOException
             switch (type) {
                 case "today":
-                    sql = "SELECT id, tittle, status, expDate, inBin FROM tasks WHERE userId = ? AND status = 0 AND expDate <= CURDATE() AND inBin = 0";
+                    sql = "SELECT id, tittle, tasks.status, expDate, inBin, tasks.file FROM tasks WHERE userId = ? AND status = 0 AND expDate <= CURDATE() AND inBin = 0";
                     break;
                 case "tomorrow":
-                    sql = "SELECT id, tittle, status, expDate, inBin FROM tasks WHERE userId = ? AND status = 0 AND expDate = CURDATE() + INTERVAL 1 DAY AND inBin = 0";
+                    sql = "SELECT id, tittle, tasks.status, expDate, inBin, tasks.file FROM tasks WHERE userId = ? AND status = 0 AND expDate = CURDATE() + INTERVAL 1 DAY AND inBin = 0";
                     break;
                 case "someday":
-                    sql = "SELECT id, tittle, status, expDate, inBin FROM tasks WHERE userId = ? AND status = 0 AND expDate > CURDATE() + INTERVAL 1 DAY AND inBin = 0";
+                    sql = "SELECT id, tittle, tasks.status, expDate, inBin, tasks.file FROM tasks WHERE userId = ? AND status = 0 AND expDate > CURDATE() + INTERVAL 1 DAY AND inBin = 0";
                     break;
                 case "fixed":
-                    sql = "SELECT id, tittle, status, expDate, inBin FROM tasks WHERE userId = ? AND status = 1 AND inBin = 0";
+                    sql = "SELECT id, tittle, tasks.status, expDate, inBin, tasks.file FROM tasks WHERE userId = ? AND status = 1 AND inBin = 0";
                     break;
                 case "bin":
-                    sql = "SELECT id, tittle, status, expDate, inBin FROM tasks WHERE userId = ? AND inBin = 1";
+                    sql = "SELECT id, tittle, tasks.status, expDate, inBin, tasks.file FROM tasks WHERE userId = ? AND inBin = 1";
                     break;
                 default:
                     sql = "";
@@ -55,7 +57,8 @@ public class TaskImplDB implements ITaskDAO {
                 Status status = Status.values()[resultSet.getInt(3)];
                 Date date = resultSet.getDate(4);
                 boolean bin = resultSet.getBoolean(5);
-                tasks.add(new Task(taskId, tittle, status, date, bin));
+                boolean haveFile = resultSet.getString(6) != null;
+                tasks.add(new Task(taskId, tittle, status, date, bin, haveFile));
             }
             return tasks;
         } catch (SQLException e) {
@@ -130,22 +133,21 @@ public class TaskImplDB implements ITaskDAO {
         Date date = null;
         try {
             date = formatter.parse(dateInString);
+            return date;
         } catch (ParseException e) {
             throw new DataFormatException("Incorrect date format");
         }
-        return date;
     }
 
-    public void saveFile(String fileTaskId, String filename) {
+    public void saveFileName(String taskId, String filename) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = DbConnection.getConnection();
             preparedStatement = connection.prepareStatement("UPDATE tasks SET tasks.file = ? WHERE tasks.id = ?");
             preparedStatement.setString(1, filename);
-            preparedStatement.setInt(2, Integer.parseInt(fileTaskId));
+            preparedStatement.setInt(2, Integer.parseInt(taskId));
             preparedStatement.execute();
-
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (DAOException e) {
@@ -155,4 +157,56 @@ public class TaskImplDB implements ITaskDAO {
         }
     }
 
+    public boolean isFileNameExist(String taskId) throws FileCheckException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = DbConnection.getConnection();
+            preparedStatement = connection.prepareStatement("SELECT tasks.file FROM todo.tasks WHERE tasks.id = ? AND tasks.file IS NOT NULL");
+            preparedStatement.setInt(1, Integer.parseInt(taskId));
+            resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException | DAOException e) {
+            throw new FileCheckException();
+        } finally {
+            DbConnection.closeResources(resultSet, preparedStatement, connection);
+        }
+    }
+
+    public String getFileName(String taskId) throws FileNotFoundException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String fileName = "";
+        try {
+            connection = DbConnection.getConnection();
+            preparedStatement = connection.prepareStatement("SELECT tasks.file FROM todo.tasks WHERE tasks.id = ? AND tasks.file IS NOT NULL");
+            preparedStatement.setInt(1, Integer.parseInt(taskId));
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                fileName = resultSet.getString(1);
+            }
+            return fileName;
+        } catch (SQLException | DAOException e) {
+            throw new FileNotFoundException("can't find the file in this task");
+        } finally {
+            DbConnection.closeResources(resultSet, preparedStatement, connection);
+        }
+    }
+
+    public void eraseFileName(String taskId) throws FileNotFoundException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = DbConnection.getConnection();
+            preparedStatement = connection.prepareStatement("UPDATE tasks SET tasks.file = NULL WHERE tasks.id = ?");
+            preparedStatement.setInt(1, Integer.parseInt(taskId));
+            preparedStatement.executeUpdate();
+        } catch (SQLException | DAOException e) {
+            throw new FileNotFoundException("cant erase a file name");
+        } finally {
+            DbConnection.closeResources(preparedStatement, connection);
+        }
+    }
 }

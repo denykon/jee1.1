@@ -18,6 +18,8 @@ public class TaskShowServlet extends AbstractServlet {
     @Override
     protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+
+        //getting the page reference
         String[] paramValues = request.getParameterValues(ConstantsJSP.REFERENCE);
         if (paramValues == null && session.getAttribute(ConstantsServlet.CURRENT_PAGE) == null) {
             session.setAttribute(ConstantsServlet.CURRENT_PAGE, ConstantsJSP.TODAY_PAGE);
@@ -25,7 +27,7 @@ public class TaskShowServlet extends AbstractServlet {
             session.setAttribute(ConstantsServlet.CURRENT_PAGE, paramValues[0]);
         }
 
-        //check the user and session need to add
+        //checking the user and session need to add
         User user = (User) session.getAttribute(ConstantsServlet.USER);
         List<Task> list = new TaskImplDB().getTasks(user.getId(), (String) session.getAttribute(ConstantsServlet.CURRENT_PAGE));
         session.setAttribute(ConstantsJSP.TASK_LIST, list);

@@ -8,7 +8,7 @@ package by.gsu.epamlab.model.constants;
  */
 public final class ConstantsJSP {
 
-    public static final String KEY_GUEST = "guest";
+    public static final String KEY_GUEST = "guest, please login";
     public static final String KEY_ERROR_MESSAGE = "errorMessage";
 
     public static final String USER_ABSENT_ERROR = "Sorry, we didn't recognise that login, please check your login and password";
@@ -28,4 +28,6 @@ public final class ConstantsJSP {
     public static final String TODAY_PAGE = "today";
     public static final String REFERENCE = "reference";
     public static final String TASK_LIST = "taskList";
+
 }
+
