@@ -2,12 +2,10 @@
 <%@ taglib uri="/jstl/core" prefix="c" %>
 <%@ page session="true" %>
 <form method="post" class="form-inline" name="loginForm" action="/login">
-
     <div class="form-group">
         <label class="control-label" for=<%= ConstantsJSP.LOGIN_NAME %>>Login</label>
         <input class="form-control" type="text" name=<%= ConstantsJSP.LOGIN_NAME %> id="login"
-               placeholder="Enter your login here"
-               required/>
+               placeholder="Enter your login here" required/>
     </div>
     <div class="form-group">
         <label class="control-label" for=<%= ConstantsJSP.PASSWORD_NAME %>>Password</label>

@@ -1,7 +1,8 @@
 package by.gsu.epamlab.controllers;
 
 import by.gsu.epamlab.model.constants.ConstantsServlet;
-import by.gsu.epamlab.model.impl.TaskImplDB;
+import by.gsu.epamlab.model.factories.TaskDAOFactory;
+import by.gsu.epamlab.model.logic.FileData;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ public class TaskActionServlet extends AbstractServlet {
 
     @Override
     protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String[] paramValues = request.getParameterValues("items");
         if (paramValues == null) {
             jump(ConstantsServlet.JUMP_MAIN, request, response);
@@ -19,7 +21,13 @@ public class TaskActionServlet extends AbstractServlet {
         }
 
         String action = request.getParameter("act");
-        new TaskImplDB().actTask(paramValues, action);
+
+        if ("delete".equals(action)) { //todo:вынести в отдельый метод
+
+            new FileData().delete(paramValues);
+        }
+
+        TaskDAOFactory.getTaskImpl().actTask(paramValues, action);
 
         jumpRedirect(ConstantsServlet.JUMP_TASK_SERVLET, response);
     }

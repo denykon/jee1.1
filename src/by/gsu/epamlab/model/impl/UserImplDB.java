@@ -44,7 +44,7 @@ public class UserImplDB implements IUserDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        //to do some md5 for password here
+        //todo some md5 for password here
         try {
             connection = DbConnection.getConnection();
             preparedStatement = connection.prepareStatement(SQL_GET_USER);
@@ -64,7 +64,7 @@ public class UserImplDB implements IUserDAO {
         } catch (SQLException e) {
             throw new UserNotFoundException();
         } catch (DAOException e) {
-            throw new UserNotFoundException();
+            throw new UserNotFoundException(e);
         } finally {
             DbConnection.closeResources(resultSet, preparedStatement, connection);
         }
@@ -90,14 +90,14 @@ public class UserImplDB implements IUserDAO {
                 }
             }
         } catch (SQLException | DAOException e) {
-            throw new UserAddingException("Problem to add user to database " + e);
+            throw new UserAddingException(ConstantsJSP.ADD_DATABASE_USER_ERROR + e);
         } finally {
             DbConnection.closeResources(preparedStatement, connection);
         }
         try {
             return getUser(login, password);
         } catch (UserNotFoundException e) {
-            throw new UserAddingException("can't create user");
+            throw new UserAddingException(ConstantsJSP.CREATE_USER_ERROR);
         }
     }
 
@@ -110,7 +110,7 @@ public class UserImplDB implements IUserDAO {
             resultSet = preparedStatement.executeQuery();
             return resultSet.next();
         } catch (SQLException e) {
-            throw new UserAddingException("Problem to add user to database " + e);
+            throw new UserAddingException(ConstantsJSP.ADD_DATABASE_USER_ERROR + e);
         } finally {
             DbConnection.closeResources(preparedStatement, resultSet);
         }

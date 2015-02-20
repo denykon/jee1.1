@@ -1,11 +1,5 @@
 package by.gsu.epamlab.model.constants;
 
-/**
- * jee1
- *
- * @author Dzianis Kanavalau on 07.02.2015.
- * @version v1.0
- */
 public final class ConstantsJSP {
 
     public static final String KEY_GUEST = "guest, please login";
@@ -13,6 +7,7 @@ public final class ConstantsJSP {
 
     public static final String USER_ABSENT_ERROR = "Sorry, we didn't recognise that login, please check your login and password";
     public static final String LOGIN_EXIST_ERROR = "This login already exist, try another one";
+    public static final String ADD_DATABASE_USER_ERROR = "Problem to add user to database ";
 
     public static final String LOGIN_NAME = "login";
     public static final String PASSWORD_NAME = "password";
@@ -29,5 +24,12 @@ public final class ConstantsJSP {
     public static final String REFERENCE = "reference";
     public static final String TASK_LIST = "taskList";
 
+    public static final String CREATE_USER_ERROR = "Can't create user";
+    public static final String ERROR_MESSAGE = "errorMessage";
+    public static final String PASSWORDS_MATCH_ERROR = "Passwords do not match";
+
+    public static final String TITLE_TEXT = "title-text";
+    public static final String EXP_DATE = "exp-date";
+    public static final String DATE = "date";
 }
 

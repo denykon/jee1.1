@@ -4,7 +4,6 @@ import by.gsu.epamlab.model.beans.User;
 import by.gsu.epamlab.model.constants.ConstantsJSP;
 import by.gsu.epamlab.model.constants.ConstantsServlet;
 import by.gsu.epamlab.model.exceptions.DAOException;
-import by.gsu.epamlab.model.exceptions.DAOFactoryException;
 import by.gsu.epamlab.model.exceptions.UserAddingException;
 import by.gsu.epamlab.model.factories.UserDAOFactory;
 
@@ -18,6 +17,7 @@ import java.io.IOException;
  * SignUpServlet
  */
 public class SignUpServlet extends AbstractServlet {
+
     /**
      * @param request  the request
      * @param response the response
@@ -29,29 +29,40 @@ public class SignUpServlet extends AbstractServlet {
         HttpSession session = request.getSession(false);
 
         if (session.getAttribute(ConstantsServlet.USER) != null) {
-            response.sendRedirect(ConstantsServlet.JUMP_MAIN);
+            jumpRedirect(ConstantsServlet.JUMP_MAIN, response);
             return;
         }
 
         String login = (String) request.getAttribute(ConstantsJSP.REG_LOGIN_NAME);
         String password = (String) request.getAttribute(ConstantsJSP.REG_PASSWORD_NAME);
+        String confPassword = (String) request.getAttribute(ConstantsJSP.REG_CONFIRM_PASSWORD_NAME);
         String firstName = (String) request.getAttribute(ConstantsJSP.REG_FIRST_NAME);
         String lastName = (String) request.getAttribute(ConstantsJSP.REG_LAST_NAME);
 
-        User user;
-        String impl = getServletContext().getInitParameter(ConstantsServlet.IMPL);
-        try {
-            user = UserDAOFactory.createDAOUser(impl).addUser(login, password, firstName, lastName);
-        } catch (UserAddingException e) {
-            request.setAttribute("regFirstName", firstName);
-            request.setAttribute("regLastName", lastName);
-            request.setAttribute("errorMessage", e.getMessage());
+        if (!password.equals(confPassword)) {
+            request.setAttribute(ConstantsJSP.REG_LOGIN_NAME, login);
+            request.setAttribute(ConstantsJSP.REG_FIRST_NAME, firstName);
+            request.setAttribute(ConstantsJSP.REG_LAST_NAME, lastName);
+            request.setAttribute(ConstantsJSP.ERROR_MESSAGE, ConstantsJSP.PASSWORDS_MATCH_ERROR);
             jump(ConstantsServlet.JUMP_SIGNUP, request, response);
             return;
-        } catch (DAOFactoryException | DAOException e) {
+        }
+
+        User user;
+
+        try {
+            user = UserDAOFactory.getUserImpl().addUser(login, password, firstName, lastName);
+        } catch (UserAddingException e) {
+            request.setAttribute(ConstantsJSP.REG_FIRST_NAME, firstName);
+            request.setAttribute(ConstantsJSP.REG_LAST_NAME, lastName);
+            request.setAttribute(ConstantsJSP.ERROR_MESSAGE, e.getMessage());
+            jump(ConstantsServlet.JUMP_SIGNUP, request, response);
+            return;
+        } catch (DAOException e) {
             jump(ConstantsServlet.JUMP_MAIN, request, response);
             return;
         }
+
         session.setAttribute(ConstantsServlet.USER, user);
         jumpRedirect(ConstantsServlet.JUMP_MAIN, response);
     }

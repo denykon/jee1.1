@@ -1,33 +1,37 @@
 <%@ page import="by.gsu.epamlab.model.constants.ConstantsJSP" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="/jstl/core" prefix="c" %>
+<div class="navigation col-sm-2"></div>
 <div class="navigation col-sm-5">
-    <form method="post" name="naviForm" action="/tasks">
-        <input type="hidden" name="<%=ConstantsJSP.REFERENCE%>">
-
+    <form id="naviForms" method="post" name="naviForm" action="/tasks">
+        <input id="ref" type="hidden" name="<%=ConstantsJSP.REFERENCE%>">
         <div class="container-fluid">
             <nav class="navbar navbar-inverse">
-                <ul class="nav navbar-nav">
+                <ul id="navi" class="nav navbar-nav">
                     <li>
-                        <a href="JavaScript:sendForm('today')">Today</a>
+                        <a href="" name="today">Today</a>
                     </li>
 
                     <li>
-                        <a href="JavaScript:sendForm('tomorrow')">Tomorrow</a>
+                        <a href="" name="tomorrow">Tomorrow</a>
                     </li>
 
                     <li>
-                        <a href="JavaScript:sendForm('someday')">Someday</a>
+                        <a href="" name="someday">Someday</a>
                     </li>
 
                     <li>
-                        <a href="JavaScript:sendForm('fixed')">Fixed</a>
+                        <a href="" name="fixed">Fixed</a>
                     </li>
 
                     <li>
-                        <a href="JavaScript:sendForm('bin')">Recycle Bin</a>
+                        <a href="" name="bin">Recycle Bin</a>
                     </li>
                 </ul>
             </nav>
         </div>
     </form>
+</div>
+<div>
+    <h2 class="text-uppercase"><c:out value="${sessionScope.taskPage}"/></h2>
 </div>

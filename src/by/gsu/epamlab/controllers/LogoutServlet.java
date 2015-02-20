@@ -22,6 +22,7 @@ public class LogoutServlet extends AbstractServlet {
      */
     @Override
     protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         HttpSession session = request.getSession(false);
 
         if(session != null){

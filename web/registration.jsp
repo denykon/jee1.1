@@ -5,7 +5,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF8">
     <title>Registration</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <!-- Optional theme -->
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -19,9 +18,10 @@
 
             <div class="col-md-4">
                 <input class="form-control input-md" type="text" name="<%= ConstantsJSP.REG_LOGIN_NAME%>"
+                       value="${requestScope.regLogin}"
                        title="Please, use only a-z, A-Z, 0-9"
                        pattern="[a-z0-9A-Z]{3,}" maxlength="10" placeholder="Enter your login here" required>
-                <span class="help-block">help</span>
+                <span class="help-block">You can use a-z, 0-9, length 3 - 10 symbols</span>
             </div>
         </div>
 
@@ -32,17 +32,18 @@
                 <input class="form-control input-md" type="password" name="<%= ConstantsJSP.REG_PASSWORD_NAME%>"
                        placeholder="Enter your password here"
                        required>
-                <span class="help-block">help</span>
+                <span class="help-block">Does not recommend the use of passwords from other sites or words
+                    that attackers can easily pick up</span>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-md-4 control-label" for="<%= ConstantsJSP.REG_CONFIRM_PASSWORD_NAME%>">Confirm
-                password</label>
+            <label class="col-md-4 control-label"
+                   for="<%= ConstantsJSP.REG_CONFIRM_PASSWORD_NAME%>">Confirm password</label>
 
             <div class="col-md-4">
                 <input class="form-control input-md" type="password" name="<%= ConstantsJSP.REG_CONFIRM_PASSWORD_NAME%>"
-                       placeholder="Enter your password here" required>
+                       placeholder="Enter your password here again" required>
             </div>
         </div>
 
@@ -75,10 +76,12 @@
                 <a href="main.jsp">Back to main page</a>
             </div>
         </div>
-
-        <c:out value="${errorMessage}"/>
-
-
+        <c:if test="${errorMessage != null}">
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <c:out value="${errorMessage}"/>
+            </div>
+        </c:if>
     </fieldset>
 </form>
 </body>

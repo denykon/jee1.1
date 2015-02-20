@@ -94,6 +94,14 @@
         <servlet-name>filedelete</servlet-name>
         <url-pattern>/filedelete</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>emptybin</servlet-name>
+        <servlet-class>by.gsu.epamlab.controllers.BinEmptyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>emptybin</servlet-name>
+        <url-pattern>/emptybin</url-pattern>
+    </servlet-mapping>
     <context-param>
         <param-name>impl</param-name>
         <param-value>db</param-value>

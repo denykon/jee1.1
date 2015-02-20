@@ -1,8 +1,11 @@
 package by.gsu.epamlab.model.beans;
 
+import by.gsu.epamlab.model.helpers.Status;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class Task {
+public class Task implements Serializable {
     private int id;
     private String tittle;
     private Status status;

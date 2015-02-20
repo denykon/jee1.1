@@ -1,10 +1,12 @@
 package by.gsu.epamlab.model.beans;
 
+import java.io.Serializable;
+
 /**
- * User entity
+ * User
  *
  */
-public class User {
+public class User implements Serializable {
 
     private int id;
     private String login;

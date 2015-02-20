@@ -1,28 +1,39 @@
-package by.gsu.epamlab.model.beans;
+package by.gsu.epamlab.model.logic;
 
+import by.gsu.epamlab.model.factories.TaskDAOFactory;
 import by.gsu.epamlab.model.helpers.Randomizer;
+import by.gsu.epamlab.model.impl.ITaskDAO;
 import by.gsu.epamlab.model.impl.TaskImplDB;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
-public class FileData {
+public class FileData implements Serializable {
 
+    // ======================================
+    // =             Constants              =
+    // ======================================
     private static final String SAVE_PATH = "C:\\files\\";
     private static final String FILE_ATTRIBUTES = "rw";
+    private static final int SIZE = 128;
 
+    // ======================================
+    // =            Constructors            =
+    // ======================================
     public FileData() {
         super();
     }
 
+    // ======================================
+    // =              Public Methods        =
+    // ======================================
     public void upload(ServletInputStream in) throws IOException {
-        System.out.println(Thread.currentThread());
         String fileName = "";
         String taskId = "";
         int rnd = Randomizer.randInt(0, 1000);
-        byte[] line = new byte[128];
-        int i = in.readLine(line, 0, 128);
+        byte[] line = new byte[SIZE];
+        int i = in.readLine(line, 0, SIZE);
         int boundaryLength = i - 2;
         String boundary = new String(line, 0, boundaryLength);
 
@@ -46,7 +57,7 @@ public class FileData {
 
                 //skip for 3 lines
                 for (int j = 0; j < 3; j++) {
-                    i = in.readLine(line, 0, 128);
+                    i = in.readLine(line, 0, SIZE);
                 }
 
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -54,7 +65,7 @@ public class FileData {
 
                 while (i != -1 && !newLine.startsWith(boundary)) {
                     buffer.write(line, 0, i);
-                    i = in.readLine(line, 0, 128);
+                    i = in.readLine(line, 0, SIZE);
                     newLine = new String(line, 0, i);
                 }
 
@@ -78,11 +89,11 @@ public class FileData {
                 }
             }
             if (newLine.contains("fileTaskId")) {
-                in.readLine(line, 0, 128);
-                i = in.readLine(line, 0, 128);
+                in.readLine(line, 0, SIZE);
+                i = in.readLine(line, 0, SIZE);
                 taskId = new String(line, 0, i - 2);
             }
-            i = in.readLine(line, 0, 128);
+            i = in.readLine(line, 0, SIZE);
         }
         if (!"".equals(taskId) && !"".equals(fileName)) {
             new TaskImplDB().saveFileName(taskId, fileName);
@@ -124,9 +135,14 @@ public class FileData {
         }
     }
 
-    public boolean delete(String fileName) {
-        File file = new File(SAVE_PATH + fileName);
-        return file.delete();
+    public void delete(String... taskId) throws FileNotFoundException {
+        ITaskDAO task = TaskDAOFactory.getTaskImpl();
+        String fileName;
+        for (String aTaskId : taskId) {
+            fileName = task.getFileName(aTaskId);
+            task.removeFileName(aTaskId);
+            new File(SAVE_PATH + fileName).delete();
+        }
     }
 
 }

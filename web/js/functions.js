@@ -1,4 +1,6 @@
 function sendForm(msg) {
+    $("#navi").find("li").removeClass('active');
+    $("this").addClass('active');
     document.naviForm.reference.value = msg;
     document.naviForm.submit();
 }
@@ -18,5 +20,10 @@ function fixTask() {
 function deleteTask() {
     document.todoForm.act.value = "delete";
     document.todoForm.action = "/taskact";
+    document.todoForm.submit();
+}
+
+function deleteAll() {
+    document.todoForm.action = "/emptybin";
     document.todoForm.submit();
 }

@@ -1,10 +1,9 @@
 package by.gsu.epamlab.model.impl;
 
-import by.gsu.epamlab.model.beans.Status;
 import by.gsu.epamlab.model.beans.Task;
 import by.gsu.epamlab.model.connection.DbConnection;
 import by.gsu.epamlab.model.exceptions.DAOException;
-import by.gsu.epamlab.model.exceptions.FileCheckException;
+import by.gsu.epamlab.model.helpers.Status;
 
 import java.io.FileNotFoundException;
 import java.sql.Connection;
@@ -28,7 +27,7 @@ public class TaskImplDB implements ITaskDAO {
         List<Task> tasks = new ArrayList<>();
         String sql;
         try {
-            connection = DbConnection.getConnection();    //???????? DAOException
+            connection = DbConnection.getConnection();    //???????? DAOException todo: different exception
             switch (type) {
                 case "today":
                     sql = "SELECT id, tittle, tasks.status, expDate, inBin, tasks.file FROM tasks WHERE userId = ? AND status = 0 AND expDate <= CURDATE() AND inBin = 0";
@@ -128,6 +127,44 @@ public class TaskImplDB implements ITaskDAO {
         }
     }
 
+    @Override
+    public void removeFileName(String taskId) throws FileNotFoundException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = DbConnection.getConnection();
+            preparedStatement = connection.prepareStatement("UPDATE tasks SET tasks.file = NULL WHERE tasks.id = ?");
+            preparedStatement.setInt(1, Integer.parseInt(taskId));
+            preparedStatement.executeUpdate();
+        } catch (SQLException | DAOException e) {
+            throw new FileNotFoundException("cant erase a file name");
+        } finally {
+            DbConnection.closeResources(preparedStatement, connection);
+        }
+    }
+
+    @Override
+    public String getFileName(String taskId) throws FileNotFoundException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String fileName = "";
+        try {
+            connection = DbConnection.getConnection();
+            preparedStatement = connection.prepareStatement("SELECT tasks.file FROM todo.tasks WHERE tasks.id = ? AND tasks.file IS NOT NULL");
+            preparedStatement.setInt(1, Integer.parseInt(taskId));
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                fileName = resultSet.getString(1);
+            }
+            return fileName;
+        } catch (SQLException | DAOException e) {
+            throw new FileNotFoundException("can't find the file in this task");
+        } finally {
+            DbConnection.closeResources(resultSet, preparedStatement, connection);
+        }
+    }
+
     private Date dateFormat(String dateInString) throws DataFormatException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
@@ -152,59 +189,6 @@ public class TaskImplDB implements ITaskDAO {
             e.printStackTrace();
         } catch (DAOException e) {
             e.printStackTrace();
-        } finally {
-            DbConnection.closeResources(preparedStatement, connection);
-        }
-    }
-
-    public boolean isFileNameExist(String taskId) throws FileCheckException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = DbConnection.getConnection();
-            preparedStatement = connection.prepareStatement("SELECT tasks.file FROM todo.tasks WHERE tasks.id = ? AND tasks.file IS NOT NULL");
-            preparedStatement.setInt(1, Integer.parseInt(taskId));
-            resultSet = preparedStatement.executeQuery();
-            return resultSet.next();
-        } catch (SQLException | DAOException e) {
-            throw new FileCheckException();
-        } finally {
-            DbConnection.closeResources(resultSet, preparedStatement, connection);
-        }
-    }
-
-    public String getFileName(String taskId) throws FileNotFoundException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        String fileName = "";
-        try {
-            connection = DbConnection.getConnection();
-            preparedStatement = connection.prepareStatement("SELECT tasks.file FROM todo.tasks WHERE tasks.id = ? AND tasks.file IS NOT NULL");
-            preparedStatement.setInt(1, Integer.parseInt(taskId));
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                fileName = resultSet.getString(1);
-            }
-            return fileName;
-        } catch (SQLException | DAOException e) {
-            throw new FileNotFoundException("can't find the file in this task");
-        } finally {
-            DbConnection.closeResources(resultSet, preparedStatement, connection);
-        }
-    }
-
-    public void eraseFileName(String taskId) throws FileNotFoundException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = DbConnection.getConnection();
-            preparedStatement = connection.prepareStatement("UPDATE tasks SET tasks.file = NULL WHERE tasks.id = ?");
-            preparedStatement.setInt(1, Integer.parseInt(taskId));
-            preparedStatement.executeUpdate();
-        } catch (SQLException | DAOException e) {
-            throw new FileNotFoundException("cant erase a file name");
         } finally {
             DbConnection.closeResources(preparedStatement, connection);
         }
