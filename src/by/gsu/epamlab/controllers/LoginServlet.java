@@ -40,8 +40,7 @@ public class LoginServlet extends AbstractServlet {
 
         if (session.getAttribute(ConstantsServlet.USER) == null) {
             try {
-                session.setAttribute(ConstantsServlet.USER, UserDAOFactory.
-                        getUserImpl().getUser(login, password));
+                session.setAttribute(ConstantsServlet.USER, UserDAOFactory.getUserImpl().getUser(login, password));
             } catch (UserNotFoundException e) {
                 session.setAttribute(ConstantsServlet.USER, null);
                 request.setAttribute(ConstantsJSP.KEY_ERROR_MESSAGE, e.getMessage());

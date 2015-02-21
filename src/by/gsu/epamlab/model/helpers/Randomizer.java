@@ -13,6 +13,9 @@ package by.gsu.epamlab.model.helpers;
 
 import java.util.Random;
 
+/**
+ * Randomizer for file names
+ */
 public class Randomizer {
 
     public static int randInt(int min, int max) {

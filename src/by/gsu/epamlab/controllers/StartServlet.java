@@ -47,6 +47,7 @@ public class StartServlet extends AbstractServlet {
                 UserDAOFactory.setUserImpl(new UserImplDB());
                 TaskDAOFactory.setTaskImpl(new TaskImplDB());
                 break;
+            //for wrong parameters
             default:
                 UserDAOFactory.setUserImpl(new UserImplDB());
                 TaskDAOFactory.setTaskImpl(new TaskImplDB());

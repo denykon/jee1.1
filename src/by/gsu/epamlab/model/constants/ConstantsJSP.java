@@ -31,5 +31,10 @@ public final class ConstantsJSP {
     public static final String TITLE_TEXT = "title-text";
     public static final String EXP_DATE = "exp-date";
     public static final String DATE = "date";
+    public static final String FILE_TASK_ID = "fileTaskId";
+    public static final String ITEMS = "items";
+    public static final String ACTION = "act";
+    public static final String DELETE = "delete";
+    public static final String BIN = "bin";
 }
 

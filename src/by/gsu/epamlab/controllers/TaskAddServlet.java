@@ -5,6 +5,7 @@ import by.gsu.epamlab.model.constants.ConstantsJSP;
 import by.gsu.epamlab.model.constants.ConstantsServlet;
 import by.gsu.epamlab.model.factories.TaskDAOFactory;
 import by.gsu.epamlab.model.helpers.DateCreator;
+import by.gsu.epamlab.model.helpers.Security;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,12 +18,17 @@ public class TaskAddServlet extends AbstractServlet {
     @Override
     protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute(ConstantsServlet.USER) == null) {
-            jumpRedirect(ConstantsServlet.JUMP_TASK_SERVLET, response);//todo try change on main
+        if (!Security.isUserValid(request)) {
+            jumpRedirect(ConstantsServlet.JUMP_MAIN, response);
             return;
         }
 
+//        if (session == null || session.getAttribute(ConstantsServlet.USER) == null) {
+//            jumpRedirect(ConstantsServlet.JUMP_TASK_SERVLET, response);//todo try change on main
+//            return;
+//        }
+
+        HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute(ConstantsServlet.USER);
 
         String tittle = request.getParameter(ConstantsJSP.TITLE_TEXT);

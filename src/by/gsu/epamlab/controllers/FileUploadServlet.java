@@ -1,7 +1,7 @@
 package by.gsu.epamlab.controllers;
 
 import by.gsu.epamlab.model.constants.ConstantsServlet;
-import by.gsu.epamlab.model.logic.FileData;
+import by.gsu.epamlab.model.entity.FileData;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;

@@ -14,6 +14,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Show current tasks
+ */
 public class TaskShowServlet extends AbstractServlet {
 
     @Override

@@ -5,6 +5,9 @@ import by.gsu.epamlab.model.constants.ConstantsServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * User validation
+ */
 public class Security {
     public static boolean isUserValid(HttpServletRequest request) {
         HttpSession session = request.getSession(true);

@@ -10,23 +10,22 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<jsp:include page="header.jsp"/>
+<jsp:include page="include/header.jsp"/>
 <hr>
 <div class="center-block">
     <c:choose>
         <c:when test="${not empty user}">
-            <c:import url="navigation.jsp"/>
-            <%--<jsp:include page="navigation.jsp"/>--%>
-            <jsp:include page="todo.jsp"/>
-            <jsp:include page="actionmenu.jsp"/>
+            <jsp:include page="include/navigation.jsp"/>
+            <jsp:include page="include/todo.jsp"/>
+            <jsp:include page="include/actionmenu.jsp"/>
         </c:when>
         <c:otherwise>
-            <jsp:include page="hello.jsp"/>
+            <jsp:include page="include/hello.jsp"/>
         </c:otherwise>
     </c:choose>
 </div>
 <hr>
-<jsp:include page="footer.jsp"/>
+<jsp:include page="include/footer.jsp"/>
 <script src="js/functions.js"></script>
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/jqfunctions.js"></script>

@@ -1,6 +1,5 @@
 <%@ page import="by.gsu.epamlab.model.constants.ConstantsJSP" %>
 <%@ taglib uri="/jstl/core" prefix="c" %>
-<%@ page session="true" %>
 <form method="post" class="form-inline" name="loginForm" action="/login">
     <div class="form-group">
         <label class="control-label" for=<%= ConstantsJSP.LOGIN_NAME %>>Login</label>

@@ -15,6 +15,8 @@ public class DbConnection {
     private static final String DB_URL = "jdbc:mysql://localhost/todo";
     private static final String USER = "root";
     private static final String PASSWORD = "admin";
+    private static final String CREATE_CONNECTION_ERROR = "Can't create connection to database";
+    private static final String RESOURCE_CLOSING_ERROR = "Resource closing problem: ";
 
     static {
         try {
@@ -28,7 +30,7 @@ public class DbConnection {
         try {
             return DriverManager.getConnection(DB_URL, USER, PASSWORD);
         } catch (SQLException e) {
-            throw new DAOException("Can't create connection to database" + e);
+            throw new DAOException(CREATE_CONNECTION_ERROR + e);
         }
     }
 
@@ -37,10 +39,8 @@ public class DbConnection {
             if (resource != null) {
                 try {
                     resource.close();
-                } catch (SQLException e) {
-                    System.err.println("Resource closing problem: " + e);
                 } catch (Exception e) {
-                    System.err.println("This resource can't be closed: " + e);
+                    System.err.println(RESOURCE_CLOSING_ERROR + e);
                 }
             }
         }

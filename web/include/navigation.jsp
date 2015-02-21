@@ -5,6 +5,7 @@
 <div class="navigation col-sm-5">
     <form id="naviForms" method="post" name="naviForm" action="/tasks">
         <input id="ref" type="hidden" name="<%=ConstantsJSP.REFERENCE%>">
+
         <div class="container-fluid">
             <nav class="navbar navbar-inverse">
                 <ul id="navi" class="nav navbar-nav">
