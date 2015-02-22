@@ -19,6 +19,8 @@ import java.util.List;
  */
 public class TaskShowServlet extends AbstractServlet {
 
+    private static final long serialVersionUID = -6978765389547869786L;
+
     @Override
     protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

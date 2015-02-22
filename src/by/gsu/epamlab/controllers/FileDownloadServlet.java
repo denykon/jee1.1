@@ -15,6 +15,8 @@ import java.io.IOException;
  * File download
  */
 public class FileDownloadServlet extends AbstractServlet {
+    private static final long serialVersionUID = 2208068223950740320L;
+
     @Override
     protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

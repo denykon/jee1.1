@@ -12,6 +12,8 @@ import java.io.*;
 
 public class FileData implements Serializable {
 
+    private static final long serialVersionUID = -2913085243064499138L;
+
     private static final String SAVE_PATH = "C:\\files\\";
     private static final String FILE_ATTRIBUTES = "rw";
     private static final String NAME_FILE_PATTERN = "name=\"file\"";

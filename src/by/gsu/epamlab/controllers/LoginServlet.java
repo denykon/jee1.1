@@ -16,6 +16,8 @@ import java.io.IOException;
  */
 public class LoginServlet extends AbstractServlet {
 
+    private static final long serialVersionUID = 8406226408709462177L;
+
     /**
      *
      * @param request the HttpServletRequest
@@ -31,7 +33,7 @@ public class LoginServlet extends AbstractServlet {
         String password = (String) request.getAttribute(ConstantsJSP.PASSWORD_NAME);
 
         if (login == null || password == null || login.length() == 0 || password.length() == 0) {
-            request.setAttribute(ConstantsJSP.KEY_ERROR_MESSAGE, ConstantsServlet.EMPTY_LOGIN_PASSWORD_ERROR);
+            request.setAttribute(ConstantsJSP.KEY_ERROR_MESSAGE, ConstantsJSP.EMPTY_LOGIN_PASSWORD_ERROR);
             jump(ConstantsServlet.JUMP_MAIN, request, response);
             return;
         }

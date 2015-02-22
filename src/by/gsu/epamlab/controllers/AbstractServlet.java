@@ -9,6 +9,8 @@ import java.io.IOException;
 
 public abstract class AbstractServlet extends HttpServlet {
 
+    private static final long serialVersionUID = -1327172833125275182L;
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         performTask(request, response);
     }

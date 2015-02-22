@@ -16,6 +16,8 @@ import java.io.IOException;
  */
 public class TaskActionServlet extends AbstractServlet {
 
+    private static final long serialVersionUID = -1258308304322857962L;
+
     @Override
     protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

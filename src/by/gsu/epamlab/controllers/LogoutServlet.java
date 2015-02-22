@@ -12,6 +12,8 @@ import java.io.IOException;
  *  LogoutServlet
  */
 public class LogoutServlet extends AbstractServlet {
+    private static final long serialVersionUID = -3298384702630067457L;
+
     /**
      *
      * @param request the request

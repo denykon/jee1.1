@@ -15,6 +15,8 @@ import java.io.IOException;
  */
 public class FileDeleteServlet extends AbstractServlet {
 
+    private static final long serialVersionUID = 2295020871017036737L;
+
     @Override
     protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

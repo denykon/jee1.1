@@ -18,8 +18,11 @@ import java.io.IOException;
  */
 public class StartServlet extends AbstractServlet {
 
+    private static final long serialVersionUID = -6689210557262892208L;
+
     private static final String RAM_IMPL = "memory";
     private static final String DATABASE_IMPL = "db";
+
 
     /**
      *

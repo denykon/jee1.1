@@ -24,7 +24,7 @@ public class UserImplRAM implements IUserDAO {
      * get user map
      * @return Map of users
      */
-    public Map<User, String> getUserMap() {
+    Map<User, String> getUserMap() {
         return userMap;
     }
 

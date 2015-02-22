@@ -3,6 +3,7 @@ $(document).ready(function () {
         event.preventDefault();
         $("#ref").val(event.target.name);
         $("#naviForms").submit();
-
     });
+
+
 });

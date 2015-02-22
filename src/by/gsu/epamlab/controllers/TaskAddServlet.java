@@ -15,6 +15,8 @@ import java.io.IOException;
 
 public class TaskAddServlet extends AbstractServlet {
 
+    private static final long serialVersionUID = -8675597891054595437L;
+
     @Override
     protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -22,11 +24,6 @@ public class TaskAddServlet extends AbstractServlet {
             jumpRedirect(ConstantsServlet.JUMP_MAIN, response);
             return;
         }
-
-//        if (session == null || session.getAttribute(ConstantsServlet.USER) == null) {
-//            jumpRedirect(ConstantsServlet.JUMP_TASK_SERVLET, response);//todo try change on main
-//            return;
-//        }
 
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute(ConstantsServlet.USER);

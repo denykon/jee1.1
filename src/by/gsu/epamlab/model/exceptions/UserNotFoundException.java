@@ -1,6 +1,8 @@
 package by.gsu.epamlab.model.exceptions;
 
 public class UserNotFoundException extends Exception {
+    private static final long serialVersionUID = 7118783405101866634L;
+
     public UserNotFoundException() {
         super();
     }

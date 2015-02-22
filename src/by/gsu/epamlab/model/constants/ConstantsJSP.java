@@ -27,6 +27,7 @@ public final class ConstantsJSP {
     public static final String CREATE_USER_ERROR = "Can't create user";
     public static final String ERROR_MESSAGE = "errorMessage";
     public static final String PASSWORDS_MATCH_ERROR = "Passwords do not match";
+    public static final String EMPTY_LOGIN_PASSWORD_ERROR = "Login or password can't be empty";
 
     public static final String TITLE_TEXT = "title-text";
     public static final String EXP_DATE = "exp-date";
@@ -36,5 +37,9 @@ public final class ConstantsJSP {
     public static final String ACTION = "act";
     public static final String DELETE = "delete";
     public static final String BIN = "bin";
+    public static final String FIXED_PAGE = "fixed";
+    public static final String BIN_PAGE = "bin";
+    public static final String TOMORROW_PAGE = "tomorrow";
+    public static final String SOMEDAY_PAGE = "someday";
 }
 

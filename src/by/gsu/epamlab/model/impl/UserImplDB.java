@@ -44,7 +44,7 @@ public class UserImplDB implements IUserDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        //todo some md5 for password here
+        //todo some md5 for password
         try {
             connection = DbConnection.getConnection();
             preparedStatement = connection.prepareStatement(SQL_GET_USER);
@@ -60,7 +60,6 @@ public class UserImplDB implements IUserDAO {
             } else {
                 throw new UserNotFoundException(ConstantsJSP.USER_ABSENT_ERROR);
             }
-
         } catch (SQLException e) {
             throw new UserNotFoundException();
         } catch (DAOException e) {
@@ -84,7 +83,6 @@ public class UserImplDB implements IUserDAO {
                     preparedStatement.setString(FIRST_NAME_INDEX, firstName);
                     preparedStatement.setString(LAST_NAME_INDEX, lastName);
                     preparedStatement.executeUpdate();
-
                 } else {
                     throw new UserAddingException(ConstantsJSP.LOGIN_EXIST_ERROR);
                 }

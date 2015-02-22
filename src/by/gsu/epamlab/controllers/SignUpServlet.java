@@ -18,6 +18,8 @@ import java.io.IOException;
  */
 public class SignUpServlet extends AbstractServlet {
 
+    private static final long serialVersionUID = 8965098908092711843L;
+
     /**
      * @param request  the request
      * @param response the response

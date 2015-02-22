@@ -7,6 +7,8 @@ package by.gsu.epamlab.model.exceptions;
  * @version v1.0
  */
 public class UserAddingException extends Exception {
+    private static final long serialVersionUID = -4447141106735888191L;
+
     public UserAddingException() {
     }
 
