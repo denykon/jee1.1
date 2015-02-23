@@ -66,6 +66,6 @@ public class SignUpServlet extends AbstractServlet {
         }
 
         session.setAttribute(ConstantsServlet.USER, user);
-        jumpRedirect(ConstantsServlet.JUMP_MAIN, response);
+        jumpRedirect(ConstantsServlet.JUMP_TASK_SERVLET, response);
     }
 }
