@@ -21,7 +21,9 @@ public class FileData implements Serializable {
     private static final String FILE_CLOSING_ERROR = "file closing problem";
     private static final String INPUT_STREAM_CLOSING_ERROR = "FileInputStream closing problem";
     private static final String OUTPUT_STREAM_CLOSING_ERROR = "OutputStream closing problem";
+    private static final String CONTENT_TYPE = "APPLICATION/OCTET-STREAM";
     private static final int SIZE = 128;
+
 
     public FileData() {
         super();
@@ -96,7 +98,7 @@ public class FileData implements Serializable {
     }
 
     public void download(String fileName, HttpServletResponse response) {
-        response.setContentType("APPLICATION/OCTET-STREAM");
+        response.setContentType(CONTENT_TYPE);
         response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         OutputStream outputStream = null;
         FileInputStream inputStream = null;

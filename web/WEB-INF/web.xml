@@ -13,6 +13,10 @@
         <filter-name>trimFilter</filter-name>
         <servlet-name>signup</servlet-name>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>trimFilter</filter-name>
+        <servlet-name>addtask</servlet-name>
+    </filter-mapping>
     <servlet>
         <servlet-name>start</servlet-name>
         <servlet-class>by.gsu.epamlab.controllers.StartServlet</servlet-class>
@@ -106,6 +110,10 @@
         <error-code>404</error-code>
         <location>/errors/404.html</location>
     </error-page>
+    <context-param>
+        <param-name>uploadDirectory</param-name>
+        <param-value>C:/files</param-value>
+    </context-param>
     <context-param>
         <param-name>impl</param-name>
         <param-value>db</param-value>

@@ -10,7 +10,7 @@
                 <td class="col-sm-1"><input type="checkbox" name="items" value="${task.id}" form="todoForm"></td>
                 <td class="col-md-4">${task.tittle}</td>
                 <td class="col-md-1">${task.status}</td>
-                <td class="col-md-1">${task.extDate}</td>
+                <td class="col-md-2">${task.extDate}</td>
                 <c:if test="${task.haveFile == false && sessionScope.taskPage != 'bin'}">
                     <td class="col-md-6">
                         <form method="post" name="uploadFileForm${task.id}" enctype="multipart/form-data"

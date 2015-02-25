@@ -1,4 +1,4 @@
-package by.gsu.epamlab.model.helpers;
+package by.gsu.epamlab.model.entity;
 
 /**
  * Task Status

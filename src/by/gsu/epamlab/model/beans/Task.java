@@ -1,6 +1,6 @@
 package by.gsu.epamlab.model.beans;
 
-import by.gsu.epamlab.model.helpers.Status;
+import by.gsu.epamlab.model.entity.Status;
 
 import java.io.Serializable;
 import java.util.Date;

@@ -26,12 +26,18 @@ public class FileDownloadServlet extends AbstractServlet {
         }
 
         String taskId = request.getParameter(ConstantsJSP.FILE_TASK_ID);
+
+        if (taskId == null) {
+            jumpRedirect(ConstantsServlet.JUMP_MAIN, response);
+            return;
+        }
+
         String fileName = TaskDAOFactory.getTaskImpl().getFileName(taskId);
+
         if (!"".equals(fileName)) {
             new FileData().download(fileName, response);
         }
 
         jumpRedirect(ConstantsServlet.JUMP_TASK_SERVLET, response);
-
     }
 }

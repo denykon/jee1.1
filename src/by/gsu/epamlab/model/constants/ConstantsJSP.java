@@ -20,7 +20,6 @@ public final class ConstantsJSP {
     public static final String REG_LAST_NAME = "regLastName";
     public static final String REG_SUBMIT_NAME = "regSubmit";
 
-    public static final String TODAY_PAGE = "today";
     public static final String REFERENCE = "reference";
     public static final String TASK_LIST = "taskList";
 
@@ -37,8 +36,10 @@ public final class ConstantsJSP {
     public static final String ACTION = "act";
     public static final String DELETE = "delete";
     public static final String BIN = "bin";
+
     public static final String FIXED_PAGE = "fixed";
     public static final String BIN_PAGE = "bin";
+    public static final String TODAY_PAGE = "today";
     public static final String TOMORROW_PAGE = "tomorrow";
     public static final String SOMEDAY_PAGE = "someday";
 }

@@ -28,9 +28,14 @@ public class TaskAddServlet extends AbstractServlet {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute(ConstantsServlet.USER);
 
-        String tittle = request.getParameter(ConstantsJSP.TITLE_TEXT);
-        String expDate = request.getParameter(ConstantsJSP.EXP_DATE);
-        String day = request.getParameter(ConstantsJSP.DATE);
+        String tittle = (String) request.getAttribute(ConstantsJSP.TITLE_TEXT);
+        String expDate = (String) request.getAttribute(ConstantsJSP.EXP_DATE);
+        String day = (String) request.getAttribute(ConstantsJSP.DATE);
+
+        if (tittle == null || "".equals(tittle) || (expDate == null && day == null)) {
+            jumpRedirect(ConstantsServlet.JUMP_TASK_SERVLET, response);
+            return;
+        }
 
         if (expDate == null) {
             String taskDate = DateCreator.create(day);

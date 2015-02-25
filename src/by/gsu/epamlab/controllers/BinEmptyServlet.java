@@ -31,6 +31,5 @@ public class BinEmptyServlet extends AbstractServlet {
         new Bin().empty(user.getId());
 
         jumpRedirect(ConstantsServlet.JUMP_TASK_SERVLET, response);
-
     }
 }

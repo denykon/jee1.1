@@ -28,6 +28,7 @@ public class SignUpServlet extends AbstractServlet {
      */
     @Override
     protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         HttpSession session = request.getSession(false);
 
         if (session.getAttribute(ConstantsServlet.USER) != null) {
@@ -40,6 +41,11 @@ public class SignUpServlet extends AbstractServlet {
         String confPassword = (String) request.getAttribute(ConstantsJSP.REG_CONFIRM_PASSWORD_NAME);
         String firstName = (String) request.getAttribute(ConstantsJSP.REG_FIRST_NAME);
         String lastName = (String) request.getAttribute(ConstantsJSP.REG_LAST_NAME);
+
+        if (login == null || password == null || confPassword == null || firstName == null || lastName == null) {
+            jumpRedirect(ConstantsServlet.JUMP_MAIN, response);
+            return;
+        }
 
         if (!password.equals(confPassword)) {
             request.setAttribute(ConstantsJSP.REG_LOGIN_NAME, login);

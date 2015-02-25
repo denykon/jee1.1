@@ -2,6 +2,7 @@ package by.gsu.epamlab.controllers;
 
 import by.gsu.epamlab.model.constants.ConstantsServlet;
 import by.gsu.epamlab.model.entity.FileData;
+import by.gsu.epamlab.model.helpers.Security;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
@@ -14,6 +15,11 @@ public class FileUploadServlet extends AbstractServlet {
 
     @Override
     protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        if (!Security.isUserValid(request) || request.getContentType() == null) {
+            jumpRedirect(ConstantsServlet.JUMP_MAIN, response);
+            return;
+        }
 
         ServletInputStream in = request.getInputStream();
         new FileData().upload(in);

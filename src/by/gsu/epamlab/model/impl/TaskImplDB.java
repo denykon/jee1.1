@@ -3,8 +3,8 @@ package by.gsu.epamlab.model.impl;
 import by.gsu.epamlab.model.beans.Task;
 import by.gsu.epamlab.model.connection.DbConnection;
 import by.gsu.epamlab.model.constants.ConstantsJSP;
+import by.gsu.epamlab.model.entity.Status;
 import by.gsu.epamlab.model.exceptions.DAOException;
-import by.gsu.epamlab.model.helpers.Status;
 
 import java.io.FileNotFoundException;
 import java.sql.Connection;
@@ -20,9 +20,11 @@ import java.util.zip.DataFormatException;
 
 public class TaskImplDB implements ITaskDAO {
 
-    public static final String FIX_ACTION = "fix";
-    public static final String MOVE_ACTION = "move";
-    public static final String DELETE_ACTION = "delete";
+    private static final String FIX_ACTION = "fix";
+    private static final String MOVE_ACTION = "move";
+    private static final String DELETE_ACTION = "delete";
+    private static final String DATE_PATTERN = "yyyy-MM-dd";
+
     private static final String SELECT_TODAY_TASKS = "SELECT id, tittle, tasks.status, expDate, inBin, tasks.file " +
             "FROM tasks WHERE userId = ? AND status = 0 AND expDate <= CURDATE() AND inBin = 0";
     private static final String SELECT_TOMORROW_TASKS = "SELECT id, tittle, tasks.status, expDate, inBin, tasks.file " +
@@ -44,7 +46,6 @@ public class TaskImplDB implements ITaskDAO {
     private static final String SQL_GET_FILENAME = "SELECT tasks.file FROM todo.tasks WHERE tasks.id = ? " +
             "AND tasks.file IS NOT NULL";
     private static final String SQL_SAVE_FILENAME = "UPDATE tasks SET tasks.file = ? WHERE tasks.id = ?";
-    private static final String DATE_PATTERN = "yyyy-MM-dd";
 
     @Override
     public List<Task> getTasks(int id, String type) {
