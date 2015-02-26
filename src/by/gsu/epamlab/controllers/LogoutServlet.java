@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- *  LogoutServlet
+ *  Logout Servlet
  */
 public class LogoutServlet extends AbstractServlet {
     private static final long serialVersionUID = -3298384702630067457L;

@@ -37,7 +37,5 @@ public class FileDownloadServlet extends AbstractServlet {
         if (!"".equals(fileName)) {
             new FileData().download(fileName, response);
         }
-
-        jumpRedirect(ConstantsServlet.JUMP_TASK_SERVLET, response);
     }
 }

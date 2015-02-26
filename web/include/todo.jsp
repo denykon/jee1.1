@@ -15,7 +15,7 @@
                     <td class="col-md-6">
                         <form method="post" name="uploadFileForm${task.id}" enctype="multipart/form-data"
                               action="/fileupload">
-                            <input type="file" name="file">
+                            <input type="file" name="file" required>
                             <input type="hidden" name="fileTaskId" value="${task.id}">
                             <input type="submit" value="Upload">
                         </form>

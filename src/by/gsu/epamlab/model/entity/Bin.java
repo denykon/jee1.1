@@ -8,6 +8,9 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Recycle bin
+ */
 public class Bin implements Serializable {
 
     private static final long serialVersionUID = -7381041883718761973L;

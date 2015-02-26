@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
  */
 public class Security {
     public static boolean isUserValid(HttpServletRequest request) {
-        HttpSession session = request.getSession(true);
+        HttpSession session = request.getSession(false);
         return (session.getAttribute(ConstantsServlet.USER) != null);
     }
 }

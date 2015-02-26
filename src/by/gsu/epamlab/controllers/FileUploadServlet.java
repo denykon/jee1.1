@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Upload the file to task
+ */
 public class FileUploadServlet extends AbstractServlet {
     private static final long serialVersionUID = -4132861398697668159L;
 
@@ -22,7 +25,9 @@ public class FileUploadServlet extends AbstractServlet {
         }
 
         ServletInputStream in = request.getInputStream();
+
         new FileData().upload(in);
+
         jumpRedirect(ConstantsServlet.JUMP_TASK_SERVLET, response);
     }
 }

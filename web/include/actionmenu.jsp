@@ -32,7 +32,7 @@
     </c:if>
 
 </div>
-
+<%--add task modal--%>
 <div id="addTaskModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -42,7 +42,7 @@
             </div>
             <div class="modal-body">
                 <form method="post" name="addTaskForm" id="addTaskForm" action="/addtask">
-                    <textarea class="form-control" rows="3" name="title-text" required></textarea>
+                    <textarea class="form-control" rows="3" name="title-text" autofocus required></textarea>
                     <input type="hidden" name="date" value="${sessionScope.taskPage}">
                     <c:if test="${sessionScope.taskPage == 'someday'}">
                         <input type="date" name="exp-date" required>

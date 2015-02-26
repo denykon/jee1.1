@@ -15,12 +15,4 @@ public class UserAddingException extends Exception {
     public UserAddingException(String message) {
         super(message);
     }
-
-    public UserAddingException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public UserAddingException(Throwable cause) {
-        super(cause);
-    }
 }

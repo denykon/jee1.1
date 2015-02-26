@@ -18,6 +18,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.zip.DataFormatException;
 
+/**
+ * Data base task implementation
+ */
 public class TaskImplDB implements ITaskDAO {
 
     private static final String FIX_ACTION = "fix";
@@ -46,6 +49,20 @@ public class TaskImplDB implements ITaskDAO {
     private static final String SQL_GET_FILENAME = "SELECT tasks.file FROM todo.tasks WHERE tasks.id = ? " +
             "AND tasks.file IS NOT NULL";
     private static final String SQL_SAVE_FILENAME = "UPDATE tasks SET tasks.file = ? WHERE tasks.id = ?";
+
+    private static final int TASK_ID_PARAMETER_INDEX = 1;
+    private static final int TASK_TITTLE_PARAMETER_INDEX = 2;
+    private static final int TASK_DATE_PARAMETER_INDEX = 3;
+
+    private static final int TASK_ID_COLUMN_INDEX = 1;
+    private static final int TASK_TITTLE_COLUMN_INDEX = 2;
+    private static final int TASK_STATUS_COLUMN_INDEX = 3;
+    private static final int TASK_DATE_COLUMN_INDEX = 4;
+    private static final int RECYCLE_BIN_COLUMN_INDEX = 5;
+    private static final int FILE_COLUMN_INDEX = 6;
+
+    private static final int FILE_NAME_PARAMETER_INDEX = 1;
+    private static final int FILE_NAME_TASK_PARAMETER_INDEX = 2;
 
     @Override
     public List<Task> getTasks(int id, String type) {
@@ -76,15 +93,15 @@ public class TaskImplDB implements ITaskDAO {
                     sql = "";
             }
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(TASK_ID_PARAMETER_INDEX, id);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                int taskId = resultSet.getInt(1);
-                String tittle = resultSet.getString(2);
-                Status status = Status.values()[resultSet.getInt(3)];
-                Date date = resultSet.getDate(4);
-                boolean bin = resultSet.getBoolean(5);
-                boolean haveFile = resultSet.getString(6) != null;
+                int taskId = resultSet.getInt(TASK_ID_COLUMN_INDEX);
+                String tittle = resultSet.getString(TASK_TITTLE_COLUMN_INDEX);
+                Status status = Status.values()[resultSet.getInt(TASK_STATUS_COLUMN_INDEX)];
+                Date date = resultSet.getDate(TASK_DATE_COLUMN_INDEX);
+                boolean bin = resultSet.getBoolean(RECYCLE_BIN_COLUMN_INDEX);
+                boolean haveFile = resultSet.getString(FILE_COLUMN_INDEX) != null;
                 tasks.add(new Task(taskId, tittle, status, date, bin, haveFile));
             }
             return tasks;
@@ -108,9 +125,9 @@ public class TaskImplDB implements ITaskDAO {
             java.sql.Date expSQLDate = new java.sql.Date(date.getTime());
             connection = DbConnection.getConnection();
             preparedStatement = connection.prepareStatement(SQL_INSERT_TASK);
-            preparedStatement.setInt(1, userId);
-            preparedStatement.setString(2, tittle);
-            preparedStatement.setDate(3, expSQLDate);
+            preparedStatement.setInt(TASK_ID_PARAMETER_INDEX, userId);
+            preparedStatement.setString(TASK_TITTLE_PARAMETER_INDEX, tittle);
+            preparedStatement.setDate(TASK_DATE_PARAMETER_INDEX, expSQLDate);
             preparedStatement.execute();
         } catch (SQLException | DAOException | DataFormatException e) {
             e.printStackTrace();
@@ -139,7 +156,7 @@ public class TaskImplDB implements ITaskDAO {
                     default:
                         throw new SQLException("invalid action");
                 }
-                preparedStatement.setInt(1, Integer.parseInt(taskId));
+                preparedStatement.setInt(TASK_ID_PARAMETER_INDEX, Integer.parseInt(taskId));
                 preparedStatement.execute();
             }
         } catch (SQLException | DAOException e) {
@@ -156,7 +173,7 @@ public class TaskImplDB implements ITaskDAO {
         try {
             connection = DbConnection.getConnection();
             preparedStatement = connection.prepareStatement(SQL_FILENAME_REMOVE);
-            preparedStatement.setInt(1, Integer.parseInt(taskId));
+            preparedStatement.setInt(TASK_ID_PARAMETER_INDEX, Integer.parseInt(taskId));
             preparedStatement.executeUpdate();
         } catch (SQLException | DAOException e) {
             throw new FileNotFoundException("cant erase a file name");
@@ -174,7 +191,7 @@ public class TaskImplDB implements ITaskDAO {
         try {
             connection = DbConnection.getConnection();
             preparedStatement = connection.prepareStatement(SQL_GET_FILENAME);
-            preparedStatement.setInt(1, Integer.parseInt(taskId));
+            preparedStatement.setInt(TASK_ID_PARAMETER_INDEX, Integer.parseInt(taskId));
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 fileName = resultSet.getString(1);
@@ -204,8 +221,8 @@ public class TaskImplDB implements ITaskDAO {
         try {
             connection = DbConnection.getConnection();
             preparedStatement = connection.prepareStatement(SQL_SAVE_FILENAME);
-            preparedStatement.setString(1, filename);
-            preparedStatement.setInt(2, Integer.parseInt(taskId));
+            preparedStatement.setString(FILE_NAME_PARAMETER_INDEX, filename);
+            preparedStatement.setInt(FILE_NAME_TASK_PARAMETER_INDEX, Integer.parseInt(taskId));
             preparedStatement.execute();
         } catch (SQLException | DAOException e) {
             e.printStackTrace();

@@ -14,6 +14,7 @@ import java.io.IOException;
 /**
  * Empty Recycle Bin
  */
+
 public class BinEmptyServlet extends AbstractServlet {
     private static final long serialVersionUID = 8891834488944681304L;
 

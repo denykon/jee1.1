@@ -14,7 +14,7 @@ package by.gsu.epamlab.model.helpers;
 import java.util.Random;
 
 /**
- * Randomizer for file names
+ * Random for file names
  */
 public class Randomizer {
 

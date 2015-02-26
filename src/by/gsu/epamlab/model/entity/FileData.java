@@ -10,6 +10,9 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
+/**
+ * Task's file
+ */
 public class FileData implements Serializable {
 
     private static final long serialVersionUID = -2913085243064499138L;

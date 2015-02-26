@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * SignUpServlet
+ * Sign up user Servlet
  */
 public class SignUpServlet extends AbstractServlet {
 

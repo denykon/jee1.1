@@ -1,7 +1,7 @@
 package by.gsu.epamlab.model.entity;
 
 /**
- * Task Status
+ * Task's Status
  */
 public enum Status {
     TODO,

@@ -12,6 +12,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Data base User implementation
+ */
 public class UserImplDB implements IUserDAO {
 
     private static final int LOGIN_INDEX = 1;

@@ -22,7 +22,8 @@ public class TaskShowServlet extends AbstractServlet {
     private static final long serialVersionUID = -6978765389547869786L;
 
     @Override
-    protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void performTask(HttpServletRequest request, HttpServletResponse response) throws
+            ServletException, IOException {
 
         //user validation
         if (!Security.isUserValid(request)) {
@@ -32,7 +33,7 @@ public class TaskShowServlet extends AbstractServlet {
 
         HttpSession session = request.getSession(false);
 
-        //getting the page
+        //getting the current page
         String[] paramValues = request.getParameterValues(ConstantsJSP.REFERENCE);
         if (paramValues == null && session.getAttribute(ConstantsServlet.CURRENT_PAGE) == null) {
             session.setAttribute(ConstantsServlet.CURRENT_PAGE, ConstantsJSP.TODAY_PAGE);
@@ -41,7 +42,10 @@ public class TaskShowServlet extends AbstractServlet {
         }
 
         User user = (User) session.getAttribute(ConstantsServlet.USER);
-        List<Task> list = TaskDAOFactory.getTaskImpl().getTasks(user.getId(), (String) session.getAttribute(ConstantsServlet.CURRENT_PAGE));
+        //task list
+        List<Task> list = TaskDAOFactory.getTaskImpl().getTasks(user.getId(),
+                (String) session.getAttribute(ConstantsServlet.CURRENT_PAGE));
+
         session.setAttribute(ConstantsJSP.TASK_LIST, list);
         jump(ConstantsServlet.JUMP_MAIN, request, response);
     }
